@@ -9,14 +9,14 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.documentfile.provider.DocumentFile
+import com.example.synchronizer.zip.ZipMaker
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
@@ -77,54 +77,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    fun createZipArchive(directory: File, rootLength: Int, zos: ZipOutputStream) {
-//        val files = directory.listFiles()
-//
-//        files?.forEach { file ->
-//            if (file.isFile && !file.isHidden) {
-//                val entryName = file.absolutePath.substring(rootLength + 1) // сохраняем относительный путь
-//                val zipEntry = ZipEntry(entryName)
-//                zos.putNextEntry(zipEntry)
-//
-//                val fileInputStream = file.inputStream()
-//                fileInputStream.copyTo(zos)
-//
-//                fileInputStream.close()
-//                zos.closeEntry()
-//            } else if (file.isDirectory) {
-//                createZipArchive(file, rootLength, zos) // Вызываем рекурсивно для поддиректорий
-//            }
-//        }
-//    }
+    private fun createZipArchive() {
+        ZipMaker.createZipArchive()
 
-    fun createZipArchive() {
-        val hardDirectory = "/storage/emulated/0/Documents/Obsidian/First"
-        val dir = File(hardDirectory)
-        val files = dir.listFiles()
-
-        val a = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-
-        val outF = File(a, "/copy.zip" )
-        val fos = FileOutputStream(outF)
-
-        val zos = ZipOutputStream(fos)
-
-//        createZipArchive(dir, dir.path.length, zos)
-
-        files.forEach { file ->
-            if (file.isFile && !file.isHidden) {
-                val zipEntry = ZipEntry(file.name)
-                zos.putNextEntry(zipEntry)
-
-                val fileInputStream = file.inputStream()
-                fileInputStream.copyTo(zos)
-
-                fileInputStream.close()
-                zos.closeEntry()
-            }
-        }
-
-        zos.close()
-        fos.close()
+        Toast.makeText(this, "Archive maked", Toast.LENGTH_LONG).show()
     }
 }
